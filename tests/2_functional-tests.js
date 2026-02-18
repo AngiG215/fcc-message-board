@@ -18,7 +18,7 @@ suite('Functional Tests', function() {
         .end(function(err, res) {
           assert.equal(res.status, 200);
           // Guardamos el ID para todo el resto de la suite
-          testThreadId = res.body._id; 
+          testThreadId = res.body._id;
           assert.isDefined(testThreadId, 'El ID del hilo debería estar definido');
           done();
         });
