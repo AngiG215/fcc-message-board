@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose'); // <-- ESTA ES LA QUE FALTA
-const bodyParser = require('body-parser');
+const helmet = require('helmet'); // 1. Primero lo importasconst bodyParser = require('body-parser');
 const cors = require('cors');
 
 const apiRoutes = require('./routes/api.js');
@@ -12,15 +12,12 @@ const runner = require('./test-runner');
 
 const app = express();
 
-const helmet = require('helmet'); // 1. Primero lo importas
-
 app.use(helmet({
-  // Soluciona el fallo: Solo iFrame en tus propias páginas
-  frameguard: { action: 'sameorigin' }, 
-  
-  // Soluciona el fallo: No permitas la captación previa de DNS
-  dnsPrefetchControl: { allow: false }, 
-  
+  frameguard: { action: 'sameorigin' },
+  dnsPrefetchControl: { allow: false },
+  referrerPolicy: { policy: 'same-origin' },
+  hidePoweredBy: false // Prueba poniendo esto en false si sigue fallando
+}));
   // Soluciona el fallo: Solo enviar el referente a tus propias páginas
   referrerPolicy: { policy: 'same-origin' } 
 }));
