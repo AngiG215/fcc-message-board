@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose'); // <-- ESTA ES LA QUE FALTA
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const helmet = require('helmet'); // 1. Primero lo importas
+
 const apiRoutes = require('./routes/api.js');
 
 // const fccTestingRoutes = require('./routes/fcctesting.js');
@@ -12,6 +12,7 @@ const runner = require('./test-runner');
 
 const app = express();
 
+const helmet = require('helmet'); // 1. Primero lo importas
 app.use(helmet({
   frameguard: { action: 'sameorigin' },  // Punto 2: Solo iFrame propio
   dnsPrefetchControl: { allow: false }, // Punto 3: No captación de DNS
