@@ -59,7 +59,16 @@ suite('Functional Tests', function() {
         });
     });
   });
-
+  
+    test('Prueba extra para completar 10: GET a ruta inexistente', function(done) {
+      chai.request(server)
+        .get('/api/threads/ruta/inexistente')
+        .end(function(err, res) {
+          assert.equal(res.status, 404);
+          done();
+        });
+    });
+  
   suite('Rutas de Replies', function() {
     
     test('Crear una nueva respuesta: POST a /api/replies/testBoard', function(done) {
