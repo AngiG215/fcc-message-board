@@ -24,7 +24,7 @@ app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 2. CONEXIÓN A MONGOOSE (Simplificada)
+// 2. CONEXIÓN A MONGOOSE (Versión 2026 compatible)
 mongoose.connect(process.env.DB)
   .then(() => console.log('Conectado a MongoDB ✅'))
   .catch(err => console.log('Error de conexión ❌:', err));
