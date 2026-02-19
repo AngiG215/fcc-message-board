@@ -13,10 +13,11 @@ const runner = require('./test-runner');
 const app = express();
 
 const helmet = require('helmet'); // 1. Primero lo importas
+
 app.use(helmet({
-  frameguard: { action: 'sameorigin' },  // Punto 2: Solo iFrame propio
-  dnsPrefetchControl: { allow: false }, // Punto 3: No captación de DNS
-  referrerPolicy: { policy: 'same-origin' } // Punto 4: Solo referente propio
+  frameguard: { action: 'sameorigin' },
+  dnsPrefetchControl: { allow: false },
+  referrerPolicy: { policy: 'same-origin' }
 }));
 
 app.use('/public', express.static(process.cwd() + '/public'));
