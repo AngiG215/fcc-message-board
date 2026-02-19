@@ -1,28 +1,25 @@
 'use strict';
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose'); // <-- ESTA ES LA QUE FALTA
-const helmet = require('helmet'); // 1. Primero lo importasconst bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const helmet = require('helmet');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const apiRoutes = require('./routes/api.js');
-
-// const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
 
 const app = express();
 
+// CONFIGURACIÓN DE SEGURIDAD (CORREGIDA)
 app.use(helmet({
   frameguard: { action: 'sameorigin' },
   dnsPrefetchControl: { allow: false },
-  referrerPolicy: { policy: 'same-origin' },
-  hidePoweredBy: false // Prueba poniendo esto en false si sigue fallando
+  referrerPolicy: { policy: 'same-origin' }
 }));
-  // Soluciona el fallo: Solo enviar el referente a tus propias páginas
-  referrerPolicy: { policy: 'same-origin' } 
-}));
-app.use('/public', express.static(process.cwd() + '/public'));
-app.use(cors({origin: '*'})); //For FCC testing purposes only
+
+// Middlewares básicos
+app.use(cors({origin: '*'})); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
