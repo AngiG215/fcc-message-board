@@ -24,8 +24,8 @@ app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 2. CONEXIÓN A MONGOOSE (Sin avisos molestos)
-mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+// 2. CONEXIÓN A MONGOOSE (Simplificada)
+mongoose.connect(process.env.DB)
   .then(() => console.log('Conectado a MongoDB ✅'))
   .catch(err => console.log('Error de conexión ❌:', err));
 
