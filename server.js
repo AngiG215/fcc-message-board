@@ -12,9 +12,11 @@ const runner = require('./test-runner');
 
 const app = express();
 
-app.use(helmet.frameguard({ action: 'sameorigin' }));
-app.use(helmet.dnsPrefetchControl());
-app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+app.use(helmet({
+  frameguard: { action: 'sameorigin' },  // Punto 2: Solo iFrame propio
+  dnsPrefetchControl: { allow: false }, // Punto 3: No captación de DNS
+  referrerPolicy: { policy: 'same-origin' } // Punto 4: Solo referente propio
+}));
 
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(cors({origin: '*'})); //For FCC testing purposes only
