@@ -1,61 +1,54 @@
 'use strict';
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
+const mongoose = require('mongoose');
 
 const apiRoutes = require('./routes/api.js');
+const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
 
 const app = express();
 
-// CONFIGURACIÓN DE SEGURIDAD (CORREGIDA)
+// 1. SEGURIDAD (Esto arregla los puntos 2, 3 y 4 de FCC)
 app.use(helmet({
   frameguard: { action: 'sameorigin' },
   dnsPrefetchControl: { allow: false },
   referrerPolicy: { policy: 'same-origin' }
 }));
 
-// Middlewares básicos
+app.use('/public', express.static(process.cwd() + '/public'));
 app.use(cors({origin: '*'})); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// --- 3. CONEXIÓN A MONGODB ---
-const MONGO_URI = process.env.DB;
+// 2. CONEXIÓN A MONGOOSE (Sin avisos molestos)
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Conectado a MongoDB ✅'))
+  .catch(err => console.log('Error de conexión ❌:', err));
 
-mongoose.connect(MONGO_URI)
-  .then(() => {
-    console.log("Conectado a MongoDB con éxito ✅");
-  })
-  .catch(err => {
-    console.error("Error crítico de conexión a la base de datos ❌:", err);
-  });
-// --- 4. RUTAS ---
 // Index page (static HTML)
 app.route('/')
   .get(function (req, res) {
-    res.sendFile(process.cwd() + '/views/board.html');
+    res.sendFile(process.cwd() + '/views/index.html');
   });
 
-  // Para el testeo de freeCodeCamp
-// fccTestingRoutes(app);
+// For FCC testing purposes
+fccTestingRoutes(app);
 
-apiRoutes(app);
-
+// Routing for API 
+apiRoutes(app);  
+    
 // 404 Not Found Middleware
 app.use(function(req, res, next) {
   res.status(404)
     .type('text')
     .send('Not Found');
-    });
+});
 
-// --- 5. INICIAR SERVIDOR ---
-const port = process.env.PORT || 3000;
-
-//Start our server and tests!
+// Start our server and tests!
 const listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
   if(process.env.NODE_ENV==='test') {
@@ -71,4 +64,4 @@ const listener = app.listen(process.env.PORT || 3000, function () {
   }
 });
 
-module.exports = app; //for testing
+module.exports = app; // For testing
