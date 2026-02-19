@@ -15,11 +15,15 @@ const app = express();
 const helmet = require('helmet'); // 1. Primero lo importas
 
 app.use(helmet({
-  frameguard: { action: 'sameorigin' },
-  dnsPrefetchControl: { allow: false },
-  referrerPolicy: { policy: 'same-origin' }
+  // Soluciona el fallo: Solo iFrame en tus propias páginas
+  frameguard: { action: 'sameorigin' }, 
+  
+  // Soluciona el fallo: No permitas la captación previa de DNS
+  dnsPrefetchControl: { allow: false }, 
+  
+  // Soluciona el fallo: Solo enviar el referente a tus propias páginas
+  referrerPolicy: { policy: 'same-origin' } 
 }));
-
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(bodyParser.json());
