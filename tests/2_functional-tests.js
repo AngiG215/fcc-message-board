@@ -6,8 +6,7 @@ const server = require('../server');
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
-  // Aumentamos el tiempo de espera global para Render
-  this.timeout(10000); 
+  this.timeout(10000);
 
   let testThreadId;
   let testReplyId;
